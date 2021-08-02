@@ -10,21 +10,29 @@ import GameplayKit
 
 class GameScene: SKScene {
     
-    private var label : SKLabelNode?
-    private var spinnyNode : SKShapeNode?
+    let cam = SKCameraNode()
+    let player = Player()
     
     override func didMove(to view: SKView) {
         
-        // Get label node from scene and store it for use later
-
+        player.position = CGPoint(x:100, y:100)
+        player.scale(to: CGSize(width: 32, height: 32))
+        self.addChild(player)
+        
+        
+        camera = childNode(withName: "camera") as? SKCameraNode
+        camera?.position = player.position
+    }
+    
+    fileprivate func updateCamera(position: CGPoint) {
+        camera?.run(SKAction.move(to: position, duration: 0.1))
+        
     }
     
     override func keyDown(with event: NSEvent) {
         switch event.keyCode {
         case 0x31:
-            if let label = self.label {
-                label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
-            }
+            print("keydown")
         default:
             print("keyDown: \(event.characters!) keyCode: \(event.keyCode)")
         }
